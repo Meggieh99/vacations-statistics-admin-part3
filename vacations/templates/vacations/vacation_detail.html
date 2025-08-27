@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Vacation Details{% endblock %}
+
+{% block content %}
+<div class="vacation-detail-container">
+    <h2 class="form-title text-center">{{ vacation.country.name }}</h2>
+
+    <div class="vacation-detail-content">
+        <img src="{% static 'images/' %}{{ vacation.image_filename }}" alt="{{ vacation.country.name }}" class="detail-image">
+
+        <div class="detail-info">
+            <p><strong>Dates:</strong> {{ vacation.start_date }} – {{ vacation.end_date }}</p>
+            <p><strong>Price:</strong> ${{ vacation.price }}</p>
+            <p><strong>Description:</strong> {{ vacation.description }}</p>
+            <p>
+                <strong>Why visit {{ vacation.country.name }}?</strong><br>
+                Experience the magic of {{ vacation.country.name }} with breathtaking landscapes, rich culture, and unforgettable adventures. This vacation offers the perfect mix of relaxation and exploration.
+            </p>
+
+            <a href="{% url 'vacation-list' %}" class="back-btn">← Back to Vacation List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

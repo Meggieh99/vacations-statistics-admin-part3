@@ -1,0 +1,381 @@
+/* ---------- General ---------- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------- Base Button Style ---------- */
+.button {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* ---------- Specific Buttons ---------- */
+.button.logout-btn {
+    background-color: #dc3545;  /* Bootstrap red */
+    color: white;
+}
+.button.logout-btn:hover {
+    background-color: #bb2d3b;
+}
+
+.button.login-btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+.button.login-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.button.vacation-btn {
+    background-color: #28a745; /* Bootstrap green */
+    color: white;
+}
+.button.vacation-btn:hover {
+    background-color: #218838;
+}
+
+/* ---------- Navigation Bar ---------- */
+.navbar {
+    background-color: #007bff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* Navbar container for buttons */
+.navbar-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ---------- Form Wrapper (Centering vertically) ---------- */
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px); /* height minus navbar */
+    padding: 30px 20px;
+}
+
+/* ---------- Form Container (Login/Register) ---------- */
+.form-container {
+    background-color: white;
+    width: 400px;
+    padding: 40px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+.form-container:hover {
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+}
+
+.form-title {
+    text-align: center;
+    color: #007bff;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    margin-top: 0.5rem;
+    font-size: 14px;
+}
+
+.form-footer {
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ---------- Vacation Cards ---------- */
+.vacation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.vacation-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+}
+.vacation-card:hover {
+    transform: scale(1.03);
+}
+
+.card-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.country-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+.date-range {
+    font-size: 0.95em;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.description {
+    font-size: 0.9em;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.like-info {
+    font-size: 0.85em;
+    color: #e91e63;
+    margin-top: auto;
+}
+
+.price {
+    background-color: #008cff;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.like-icon.liked {
+    color: red;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.like-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  border: none;
+}
+
+.liked {
+  color:  #e91e63;
+}
+
+.card-image {
+  position: relative;
+}
+/* modal title */
+.modal-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* modal body */
+.modal-body {
+  padding: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* modal form fields */
+.modal-body .form-control {
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+/* modal footer buttons */
+.modal-footer {
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+}
+
+.modal-footer .btn {
+  min-width: 100px;
+}
+
+.modal-content {
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.modal-body label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.modal-footer .btn {
+  font-size: 1.05rem;
+}
+.add-vacation-container {
+  max-width: 600px;
+  margin: auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.add-vacation-form .form-label {
+  font-weight: 600;
+}
+
+.add-vacation-form input {
+  box-shadow: none !important;
+}
+
+/* ---------- Editable Image Overlay ---------- */
+.edit-image-overlay-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    max-width: 100%;
+}
+
+.edit-image-overlay-container img {
+    display: block;
+    max-width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.edit-image-overlay-container .overlay-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    pointer-events: none;
+}
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar-username {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
+#delete-message {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  margin-bottom: 20px;
+}
+
+#delete-message.show {
+  opacity: 1;
+}
+
+.messages-wrapper {
+  max-width: 500px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.alert-message {
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}

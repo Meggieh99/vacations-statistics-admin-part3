@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+  <div class="form-container">
+    <h2 class="form-title text-center">Login</h2>
+
+    <form method="post" action="{% url 'user-login' %}">
+      {% csrf_token %}
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required placeholder="Enter your email">
+
+      <label for="password">Password:</label>
+      <input 
+        name="password" 
+        required 
+        placeholder="Enter your password"
+        type="password"
+        minlength="8"
+        oninvalid="this.setCustomValidity('Password must be at least 8 characters long.')"
+        oninput="this.setCustomValidity('')"
+      >
+
+      <button type="submit" class="btn-login">Login</button>
+    </form>
+
+    <p class="form-footer">Don't have an account?</p>
+    <p class="text-center">
+        <a href="{% url 'register-form' %}" class="register-link">Register now</a>
+    </p>
+    
+  </div>
+</div>
+{% endblock %}

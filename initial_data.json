@@ -1,0 +1,110 @@
+[
+  {
+    "model": "vacations.role",
+    "pk": 1,
+    "fields": {
+      "name": "admin"
+    }
+  },
+  {
+    "model": "vacations.role",
+    "pk": 2,
+    "fields": {
+      "name": "user"
+    }
+  },
+  {
+    "model": "vacations.user",
+    "pk": 1,
+    "fields": {
+      "email": "admin@example.com",
+      "password": "adminpass",
+      "first_name": "Admin",
+      "last_name": "Manager",
+      "role": 1,
+      "is_staff": true
+    }
+  },
+  {
+    "model": "vacations.user",
+    "pk": 2,
+    "fields": {
+      "email": "Dan@example.com",
+      "password": "Danpass",
+      "first_name": "Dan",
+      "last_name": "Doe",
+      "role": 2,
+      "is_staff": false
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 1,
+    "fields": {
+      "name": "Israel"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 2,
+    "fields": {
+      "name": "USA"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 3,
+    "fields": {
+      "name": "France"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 4,
+    "fields": {
+      "name": "Germany"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 5,
+    "fields": {
+      "name": "Italy"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 6,
+    "fields": {
+      "name": "Spain"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 7,
+    "fields": {
+      "name": "Canada"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 8,
+    "fields": {
+      "name": "Brazil"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 9,
+    "fields": {
+      "name": "Japan"
+    }
+  },
+  {
+    "model": "vacations.country",
+    "pk": 10,
+    "fields": {
+      "name": "Mexico"
+    }
+  }
+]

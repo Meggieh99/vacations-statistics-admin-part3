@@ -1,0 +1,74 @@
+services:
+  database:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: vacation_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  vacations:
+    build:
+      context: .  # root של stats_backend
+      dockerfile: vacations/vacations_backend/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DJANGO_SETTINGS_MODULE: vacations_backend.settings
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: vacation_db
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+    restart: always
+
+  backend:
+    build:
+      context: .
+      dockerfile: stats_backend/Dockerfile
+    command: python manage.py runserver 0.0.0.0:9000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "9000:9000"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DJANGO_SETTINGS_MODULE: stats_backend.settings
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: vacation_db
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      IN_DOCKER: "1"
+    restart: always
+
+  frontend:
+    build:
+      context: ./statistics-app
+      dockerfile: Dockerfile
+    command: npm start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./statistics-app:/app
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  pg_data:

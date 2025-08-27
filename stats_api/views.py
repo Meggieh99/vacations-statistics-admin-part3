@@ -5,7 +5,8 @@ from typing import Any, Dict, Iterable, List, Tuple
 from django.http import HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
-from vacations.models import Like, User, Vacation
+from vacations.models import User, Vacation, Like
+
 
 
 def _json_error(message: str, status: int = 400) -> JsonResponse:

@@ -7,14 +7,21 @@ from pathlib import Path
 
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
-# point Python to Part B so 'vacations' app can be imported
-PART_B_ROOT: str = r"C:\Project"
-if PART_B_ROOT not in sys.path:
-    sys.path.append(PART_B_ROOT)
+# Extend Python path to include Part B (vacations)
+IN_DOCKER = os.environ.get("IN_DOCKER", "0") == "1"
+if IN_DOCKER:
+    sys.path.append("/app/vacations")
+else:
+    sys.path.append(r"C:\Project")
 
+# General Django settings
 SECRET_KEY: str = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key")
 DEBUG: bool = os.environ.get("DEBUG", "1") == "1"
-ALLOWED_HOSTS: list[str] = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS: list[str] = [
+    "127.0.0.1",
+    "localhost",
+    "backend",  # ✅ allow container name inside Docker
+]
 
 INSTALLED_APPS: list[str] = [
     "django.contrib.admin",
@@ -23,11 +30,13 @@ INSTALLED_APPS: list[str] = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "vacations",
-    "stats_api",
+    "corsheaders",            # ✅ CORS support
+    "stats_api",              # ← local stats app
+    "vacations",   
 ]
 
 MIDDLEWARE: list[str] = [
+    "corsheaders.middleware.CorsMiddleware",     # ✅ should be first or second
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -55,17 +64,17 @@ TEMPLATES = [
     },
 ]
 
-# DB from Part B
+# Import shared DB config from Part B (if exists)
 try:
     import db_config  # type: ignore
 except Exception:
     db_config = None  # type: ignore
 
-DB_NAME = getattr(db_config, "DB_NAME", "vacation_db")
-DB_USER = getattr(db_config, "DB_USER", "postgres")
-DB_PASSWORD = getattr(db_config, "DB_PASSWORD", "")
-DB_HOST = getattr(db_config, "DB_HOST", "localhost")
-DB_PORT = getattr(db_config, "DB_PORT", "5432")
+DB_NAME = os.environ.get("DB_NAME") or getattr(db_config, "DB_NAME", "vacation_db")
+DB_USER = os.environ.get("DB_USER") or getattr(db_config, "DB_USER", "postgres")
+DB_PASSWORD = os.environ.get("DB_PASSWORD") or getattr(db_config, "DB_PASSWORD", "")
+DB_HOST = os.environ.get("DB_HOST") or getattr(db_config, "DB_HOST", "localhost")
+DB_PORT = os.environ.get("DB_PORT") or getattr(db_config, "DB_PORT", "5432")
 
 DATABASES = {
     "default": {
@@ -78,16 +87,27 @@ DATABASES = {
     }
 }
 
+# Locale and timezone
 LANGUAGE_CODE: str = "en-us"
 TIME_ZONE: str = "UTC"
 USE_I18N: bool = True
 USE_TZ: bool = True
 
+# Static files
 STATIC_URL: str = "static/"
 STATIC_ROOT: Path = BASE_DIR / "staticfiles"
 
+# Session & CSRF
 SESSION_ENGINE: str = "django.contrib.sessions.backends.db"
-
-# Allow React dev server to POST/GET (same host; cookies allowed)
-CSRF_TRUSTED_ORIGINS: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
 SESSION_COOKIE_SAMESITE = "Lax"
+
+CSRF_TRUSTED_ORIGINS: list[str] = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# ✅ CORS settings
+CORS_ALLOWED_ORIGINS: list[str] = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]

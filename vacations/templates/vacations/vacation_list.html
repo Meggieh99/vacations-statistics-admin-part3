@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Vacation List{% endblock %}
+
+{% block content %}
+
+<h2 class="form-title text-center">Vacation List</h2>
+
+<!-- Flash Messages -->
+{% if messages %}
+  <div class="text-center" style="margin-top: 20px;">
+    {% for message in messages %}
+      <div style="color: red; font-weight: bold;">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="vacation-grid">
+   {% for vacation in vacations %}
+   <div class="vacation-card">
+      <div class="card-image">
+         <img src="{% static 'images/' %}{{ vacation.image_filename }}" alt="{{ vacation.country }}">
+
+         <!-- Like Button -->
+         <button 
+           class="like-btn like-badge {% if vacation.liked_by_user %}liked{% endif %}" 
+           data-vacation-id="{{ vacation.id }}" 
+           data-liked="{{ vacation.liked_by_user|yesno:'true,false' }}">
+           ♥ Like {{ vacation.like_count }}
+         </button>
+      </div>
+
+      <div class="card-body">
+         <div class="country-name">{{ vacation.country }}</div>
+         <div class="date-range">{{ vacation.start_date }} - {{ vacation.end_date }}</div>
+         <div class="description">{{ vacation.description }}</div>
+         <div class="price">${{ vacation.price }}</div>
+         <a 
+         href="{% url 'vacation-detail' vacation.id %}" 
+         class="nav-btn details-btn"
+         data-vacation-id="{{ vacation.id }}"
+         >
+         Details
+         </a>
+      </div>
+   </div>
+   {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/like.js' %}"></script>
+<script src="{% static 'js/vacation_detail_access.js' %}"></script>
+{% endblock %}

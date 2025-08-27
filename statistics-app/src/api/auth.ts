@@ -1,6 +1,5 @@
-
-// Simple API client for the statistics app (uses CRA proxy to :9000).
-// All calls use relative paths and include cookies for session-based auth.
+// src/api/auth.ts
+// Unified API client for the statistics app (supports dev and Docker via proxy)
 
 export type VacationsStats = {
   pastVacations: number;
@@ -18,18 +17,20 @@ export type SessionInfo = {
   user?: { id: number; email: string; role?: string | null };
 };
 
-// Basic helper that fetches JSON or throws an Error with response text.
+// 🔁 GET helper
 async function apiGet<T>(path: string): Promise<T> {
-  const res = await fetch(path, { credentials: "include" });
+  const res = await fetch(`/api${path}`, {
+    credentials: "include",
+  });
   if (!res.ok) {
     throw new Error(await res.text());
   }
   return (await res.json()) as T;
 }
 
-// Basic helper that fetches JSON or throws an Error with response text + status.
+// 🔁 POST helper
 async function apiPost<T>(path: string, body?: unknown): Promise<T> {
-  const res = await fetch(path, {
+  const res = await fetch(`/api${path}`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -44,37 +45,36 @@ async function apiPost<T>(path: string, body?: unknown): Promise<T> {
   return (await res.json()) as T;
 }
 
-// ---- Auth endpoints (session-based on :9000 via proxy) ----
+// ---- Auth endpoints ----
 export function login(email: string, password: string): Promise<{ success: boolean }> {
-  return apiPost<{ success: boolean }>("/api/login/", { email, password });
+  return apiPost<{ success: boolean }>("/login/", { email, password });
 }
 
 export function logout(): Promise<{ success: boolean }> {
-  return apiPost<{ success: boolean }>("/api/logout/");
+  return apiPost<{ success: boolean }>("/logout/");
 }
 
 export function getSession(): Promise<SessionInfo> {
-  return apiGet<SessionInfo>("/api/session/");
+  return apiGet<SessionInfo>("/session/");
+}
+
+export function checkSession(): Promise<{ authenticated: boolean }> {
+  return apiGet<{ authenticated: boolean }>("/session/");
 }
 
 // ---- Statistics endpoints ----
 export function getVacationsStats(): Promise<VacationsStats> {
-  return apiGet<VacationsStats>("/api/vacations/stats/");
+  return apiGet<VacationsStats>("/vacations/stats/");
 }
 
 export function getTotalUsers(): Promise<TotalUsers> {
-  return apiGet<TotalUsers>("/api/users/total/");
+  return apiGet<TotalUsers>("/users/total/");
 }
 
 export function getTotalLikes(): Promise<TotalLikes> {
-  return apiGet<TotalLikes>("/api/likes/total/");
+  return apiGet<TotalLikes>("/likes/total/");
 }
 
 export function getLikesDistribution(): Promise<LikesDistributionItem[]> {
-  return apiGet<LikesDistributionItem[]>("/api/likes/distribution/");
-}
-// src/api/auth.ts
-
-export function checkSession(): Promise<{ authenticated: boolean }> {
-  return apiGet<{ authenticated: boolean }>("/api/session/");
+  return apiGet<LikesDistributionItem[]>("/likes/distribution/");
 }

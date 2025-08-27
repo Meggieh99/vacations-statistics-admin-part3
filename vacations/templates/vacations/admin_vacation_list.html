@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Admin Vacation Management{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="form-title text-center">Manage Vacations</h2>
+
+    <!-- Flash message for deletion confirmation -->
+   <div id="delete-message"
+     class="alert alert-success text-center"
+     role="alert"
+     style="display: none; opacity: 0; transition: opacity 0.5s ease;">
+    Vacation deleted successfully.
+</div>
+
+
+
+    <div class="text-center" style="margin-bottom: 20px;">
+        <a href="{% url 'vacation-add-form' %}" class="button vacation-btn">+ Add Vacation</a>
+    </div>
+   
+    <div class="vacation-grid">
+        {% for vacation in vacations %}
+        <div class="vacation-card">
+            <div class="card-image">
+                <img src="{% static 'images/' %}{{ vacation.image_filename }}" alt="{{ vacation.country.name }}">
+            </div>
+
+            <div class="card-body">
+                <div class="country-name">{{ vacation.country.name }}</div>
+                <div class="date-range">{{ vacation.start_date }} - {{ vacation.end_date }}</div>
+                <div class="description">{{ vacation.description }}</div>
+                <div class="price">${{ vacation.price }}</div>
+
+                <div class="text-center" style="margin-top: 15px;">
+                    <a 
+                        href="{% url 'edit-vacation-page' vacation.id %}" 
+                        class="btn btn-sm btn-primary">
+                        Edit
+                    </a>
+
+                    <button 
+                        class="button logout-btn delete-btn" 
+                        data-vacation-id="{{ vacation.id }}">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/admin_actions.js' %}"></script>
+{% endblock %}

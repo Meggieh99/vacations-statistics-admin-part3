@@ -2,7 +2,8 @@
 
 from typing import Optional
 from django.http import HttpRequest
-from vacations.models import User
+from stats_api.models import User, Vacation, Like
+
 
 
 def get_logged_in_admin(request: HttpRequest) -> Optional[User]:
