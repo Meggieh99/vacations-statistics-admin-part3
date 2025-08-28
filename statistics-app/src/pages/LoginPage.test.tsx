@@ -1,5 +1,4 @@
 /**
- * LoginPage tests
  *
  * Positive: admin login success triggers authentication via context.
  * Negative: non-admin or invalid credentials show a 403-like error and do NOT authenticate.

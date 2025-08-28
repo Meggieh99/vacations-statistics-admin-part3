@@ -13,7 +13,7 @@ COPY manage.py .
 # Copy the vacations folder
 COPY vacations ./vacations
 
-# הוספת נתיב מודולים לפייתון
+# add vacations to PYTHONPATH
 ENV PYTHONPATH="${PYTHONPATH}:/app/vacations"
 
 # Expose port

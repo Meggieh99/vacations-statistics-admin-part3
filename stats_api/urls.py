@@ -12,7 +12,7 @@ urlpatterns = [
     path("api/likes/total/", views.total_likes, name="total_likes"),
     path("api/likes/distribution/", views.likes_distribution, name="likes_distribution"),
 
-     #NEW — hydrate auth on page load / refresh:
+     # hydrate auth on page load / refresh:
     path("api/session/", views.session_view, name="session"),
 
 ]

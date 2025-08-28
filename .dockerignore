@@ -9,3 +9,7 @@ __pycache__
 *.tar
 node_modules/
 build/
+.git/
+.gitignore
+.dockerignore
+*.md

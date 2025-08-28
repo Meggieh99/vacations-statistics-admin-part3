@@ -1,46 +1,185 @@
-# Getting Started with Create React App
+# Vacation Management System – Part III
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Dockerized system composed of four services sharing the same PostgreSQL database:
 
-## Available Scripts
+* **vacations** – Django app for users (list/like/unlike, details, admin CRUD pages).
+* **backend** – Django API for the statistics dashboard.
+* **frontend** – React app for the statistics dashboard.
+* **database** – PostgreSQL 16 with initial seed data.
 
-In the project directory, you can run:
+The two web apps read/write the **same DB**, so actions like “like” in the vacations app are reflected immediately in the statistics app.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Project structure
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+stats_backend/
+├─ docker-compose.yml
+├─ init/
+│  └ init.sql                     # initial schema/data (runs only on first DB volume creation)
+├─ vacations/                      # Django app (user-facing Vacations)
+│  ├─ vacations_backend/           # settings/urls/wsgi
+│  └─ templates/                   # HTML pages
+├─ stats_backend/                  # Django API for statistics
+│  └─ stats_api/
+└─ statistics-app/                 # React dashboard (admin)
+   ├─ src/
+   ├─ package.json
+   └─ Dockerfile
+```
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Services & Ports
 
-### `npm run build`
+* Vacations (Django): `http://localhost:8000`
+* Statistics API (Django): `http://localhost:9000`
+* Statistics UI (React): `http://localhost:3000`
+* PostgreSQL: `localhost:5432`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Statistics Dashboard (Implemented)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* **Total likes** KPI.
+* **Filters**: minimum likes, “destination contains”.
+* **Charts**:
 
-### `npm run eject`
+  * Likes per destination (bar chart).
+  * Likes share (donut/pie).
+* **Session-aware endpoints** (login/logout/session) used by the dashboard.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+API paths used by the frontend:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+POST  /api/login/
+POST  /api/logout/
+GET   /api/session/
+GET   /api/vacations/stats/        # aggregates for the dashboard
+GET   /api/users/total/
+GET   /api/likes/total/
+GET   /api/likes/distribution/
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Note: both apps share the same Postgres DB, so likes from the Vacations app are visible in these aggregates.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
 
-## Learn More
+## Prerequisites
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* Docker Desktop (includes Docker Compose)
+* Git
+* Optional: Docker Hub account (to pull prebuilt images)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+## Run locally with Compose
+
+From the project root:
+
+```
+docker compose up --build
+```
+
+First run creates the DB volume and executes `init/init.sql`.
+Subsequent runs reuse the volume (no re-seeding).
+
+Open:
+
+* Vacations app: `http://localhost:8000`
+* Statistics UI: `http://localhost:3000`
+
+---
+
+## Initial Data and DB Notes
+
+* `init/init.sql` runs **only** when the Postgres volume is created the first time.
+* To re-seed from scratch (**deletes all data**):
+
+```
+docker compose down -v
+docker compose up --build
+```
+
+---
+
+## Tests
+
+Frontend (React) tests:
+
+```
+cd statistics-app
+npm test
+```
+
+> Django tests are not required for this submission; only frontend tests are included.
+
+---
+
+## Docker Hub (Prebuilt Images)
+
+If you prefer to pull instead of building locally:
+
+```
+docker pull meggie87/vacations:latest
+docker pull meggie87/stats-backend:latest
+docker pull meggie87/stats-frontend:latest
+```
+
+Update `docker-compose.yml` to use `image:` instead of `build:` for each service.
+
+---
+
+## Deployment on AWS (EC2 Quick Path)
+
+1. Launch an Ubuntu EC2 instance and open security-group ports 80/443 (and 3000/8000/9000 for testing if needed).
+2. SSH to the instance and install Docker + Docker Compose.
+3. `git clone` this repository on the server.
+4. `docker login` (if pulling from Docker Hub).
+5. `docker compose up -d` to run in background.
+
+Production tips:
+
+* Set `ALLOWED_HOSTS` in both Django settings.
+* Use a reverse proxy (e.g., Nginx) to expose a single domain.
+* Add environment variables via compose or `.env` file (DB creds already passed in compose).
+
+---
+
+## Credentials (To Fill)
+
+Provide demo credentials for grading:
+
+```
+Admin email: <fill-in>
+Password:    <fill-in>
+```
+
+---
+
+## Common Issues
+
+* **Like/unlike returns 404**: make sure the frontend endpoints include the `/api/` prefix and match the Django `urls.py`.
+* **init.sql didn’t run again**: remove the DB volume (`docker compose down -v`) if you truly need a clean seed.
+* **Static/UI looks off in Django pages**: ensure static files are copied into the image and `STATIC_URL` / `collectstatic` are configured if you serve Django templates in production.
+
+---
+
+## License
+
+Educational project for the Full-Stack Python course.
+
+---
+
+### You Still Need to Fill In:
+
+* [ ] Admin credentials (`email`/`password`) for testing.
+* [ ] Add screenshots of your final UI.
+* [ ] Add your GitHub repository link (optional).
+* [ ] Add your AWS deployment link (if applicable).
+* [ ] Optional: add a short video demo or recording.
+
+
+Author
+Meggie Hadad GitHub: meggie87

@@ -19,7 +19,7 @@ services:
 
   vacations:
     build:
-      context: .  # root של stats_backend
+      context: .  
       dockerfile: vacations/vacations_backend/Dockerfile
     ports:
       - "8000:8000"

@@ -1,4 +1,4 @@
-// src/api/auth.ts
+
 // Unified API client for the statistics app (supports dev and Docker via proxy)
 
 export type VacationsStats = {
@@ -17,7 +17,7 @@ export type SessionInfo = {
   user?: { id: number; email: string; role?: string | null };
 };
 
-// 🔁 GET helper
+//  GET helper
 async function apiGet<T>(path: string): Promise<T> {
   const res = await fetch(`/api${path}`, {
     credentials: "include",
@@ -28,7 +28,7 @@ async function apiGet<T>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
-// 🔁 POST helper
+// POST helper
 async function apiPost<T>(path: string, body?: unknown): Promise<T> {
   const res = await fetch(`/api${path}`, {
     method: "POST",
