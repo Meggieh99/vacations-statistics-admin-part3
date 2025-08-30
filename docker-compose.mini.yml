@@ -1,26 +1,23 @@
+version: '3.9'
+
 services:
   database:
     image: postgres:16
-    restart: always
     environment:
       POSTGRES_DB: vacation_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
     ports:
       - "5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 3s
+      interval: 10s
+      timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   vacations:
-    build:
-      context: .  
-      dockerfile: vacations/vacations_backend/Dockerfile
+    image: meggie87/vacations:v3
     ports:
       - "8000:8000"
     depends_on:
@@ -33,15 +30,10 @@ services:
       DB_NAME: vacation_db
       DB_USER: postgres
       DB_PASSWORD: 123456
-    restart: always
+    restart: unless-stopped
 
   backend:
-    build:
-      context: .
-      dockerfile: stats_backend/Dockerfile
-    command: python manage.py runserver 0.0.0.0:9000
-    volumes:
-      - .:/usr/src/app
+    image: meggie87/stats-backend:v4
     ports:
       - "9000:9000"
     depends_on:
@@ -55,20 +47,12 @@ services:
       DB_USER: postgres
       DB_PASSWORD: 123456
       IN_DOCKER: "1"
-    restart: always
+    restart: unless-stopped
 
   frontend:
-    build:
-      context: ./statistics-app
-      dockerfile: Dockerfile
-    command: npm start
+    image: meggie87/stats-frontend:v5
     ports:
       - "3000:3000"
-    volumes:
-      - ./statistics-app:/app
     depends_on:
       - backend
-    restart: always
-
-volumes:
-  pg_data:
+    restart: unless-stopped

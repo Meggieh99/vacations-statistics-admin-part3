@@ -13,3 +13,4 @@ build/
 .gitignore
 .dockerignore
 *.md
+stats-key.pem

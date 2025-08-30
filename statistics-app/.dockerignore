@@ -1,34 +1,35 @@
 node_modules
 build
 .env
-# קבצים ותיקיות שלא צריך בקונטיינר
+
 __pycache__/
 *.py[cod]
 *.sqlite3
 
-# קבצים זמניים
+
 *.log
 *.tmp
 *.bak
 *.swp
 *.DS_Store
 
-# קבצי מערכת (Windows / macOS)
+
 Thumbs.db
 ehthumbs.db
 .idea/
 .vscode/
 
-# תיקיות בנייה של React
+
 node_modules/
 build/
 dist/
 
-# קבצי קונפיג אישיים או מקומיים
+
 .env
 *.env
 .env.*
 
-# קבצי Docker ישנים (אם תזיזי)
+
 Dockerfile.*
+stats-key.pem
 

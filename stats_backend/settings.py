@@ -17,11 +17,15 @@ else:
 # General Django settings
 SECRET_KEY: str = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key")
 DEBUG: bool = os.environ.get("DEBUG", "1") == "1"
-ALLOWED_HOSTS: list[str] = [
-    "127.0.0.1",
-    "localhost",
-    "backend",  #  allow container name inside Docker
-]
+
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",
+#     "localhost",
+#     "backend",  # allow container name inside Docker
+# ]
+
+ALLOWED_HOSTS = ["*"]
+
 
 INSTALLED_APPS: list[str] = [
     "django.contrib.admin",
