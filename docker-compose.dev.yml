@@ -18,7 +18,6 @@ services:
       retries: 5
 
   vacations:
-    image: meggie87/vacations:v3
     build:
       context: .  
       dockerfile: vacations/vacations_backend/Dockerfile
@@ -37,7 +36,6 @@ services:
     restart: always
 
   backend:
-    image: meggie87/stats-backend:v4
     build:
       context: .
       dockerfile: stats_backend/Dockerfile
@@ -60,7 +58,6 @@ services:
     restart: always
 
   frontend:
-    image: meggie87/stats-frontend:v5
     build:
       context: ./statistics-app
       dockerfile: Dockerfile

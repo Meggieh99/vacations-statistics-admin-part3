@@ -13,6 +13,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
+      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
       - pg_data:/var/lib/postgresql/data
     restart: always
 
