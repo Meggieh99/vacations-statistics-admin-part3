@@ -12,15 +12,15 @@ services:
       - pg_data:/var/lib/postgresql/data
       - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
       interval: 5s
       timeout: 3s
       retries: 5
 
   vacations:
-    image: meggie87/vacations:v3
+    image: meggie87/vacations:v6
     build:
-      context: .  
+      context: .
       dockerfile: vacations/vacations_backend/Dockerfile
     ports:
       - "8000:8000"
@@ -37,7 +37,7 @@ services:
     restart: always
 
   backend:
-    image: meggie87/stats-backend:v4
+    image: meggie87/stats-backend:v6
     build:
       context: .
       dockerfile: stats_backend/Dockerfile
@@ -60,15 +60,13 @@ services:
     restart: always
 
   frontend:
-    image: meggie87/stats-frontend:v5
+    image: meggie87/stats-frontend:v6
     build:
       context: ./statistics-app
       dockerfile: Dockerfile
     command: npm start
     ports:
       - "3000:3000"
-    volumes:
-      - ./statistics-app:/app
     depends_on:
       - backend
     restart: always
